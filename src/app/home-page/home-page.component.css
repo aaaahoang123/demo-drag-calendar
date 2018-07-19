@@ -1,0 +1,10 @@
+[nz-button] {
+  margin-left: 5px!important;
+  margin-bottom: 12px;
+}
+::ng-deep .ant-card-meta-description {
+  max-width: 15ch!important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,11 @@
+<div nz-row *ngIf="videos">
+  <div nz-col [nzXs]="12" [nzMd]="6" [nzSm]="12" [nzXl]="4" *ngFor="let video of videos" style="padding: 5px 5px">
+    <nz-card nzHoverable [nzCover]="coverTemplate">
+      <nz-card-meta [nzTitle]="video.snippet.title" [nzDescription]="video.snippet.channelTitle" routerLink="/watch/{{video.id.videoId}}"></nz-card-meta>
+    </nz-card>
+    <ng-template #coverTemplate>
+      <img routerLink="/watch/{{video.id.videoId}}" alt="example" src={{video.snippet.thumbnails.medium.url}}>
+    </ng-template>
+  </div>
+  <button nz-button nzType="primary" (click)="loadVideo()" [nzLoading]="isLoadingVideos">Click me!</button>
+</div>
