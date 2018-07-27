@@ -9,8 +9,12 @@ import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { AppRoutingModule } from './app-routing.module';
-import { HomePageComponent } from './home-page/home-page.component';
-import { WatchVideoComponent } from './watch-video/watch-video.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { WatchVideoComponent } from './components/watch-video/watch-video.component';
+import { BigScreenNavbarComponent } from './components/big-screen-navbar/big-screen-navbar.component';
+import { MobileScreenNavbarComponent } from './components/mobile-screen-navbar/mobile-screen-navbar.component';
+import { DemoTableComponent } from './components/demo-table/demo-table.component';
+import { NgInitDirective } from './directives/ng-init.directive';
 
 registerLocaleData(en);
 
@@ -18,7 +22,11 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     HomePageComponent,
-    WatchVideoComponent
+    WatchVideoComponent,
+    BigScreenNavbarComponent,
+    MobileScreenNavbarComponent,
+    DemoTableComponent,
+    NgInitDirective
   ],
   imports: [
     BrowserModule,

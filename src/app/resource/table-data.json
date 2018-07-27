@@ -1,0 +1,162 @@
+{
+  "time_slot": [
+    {
+      "key": 10,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 10.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 11,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 11.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },{
+      "key": 12,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },{
+      "key": 12.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 13,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 13.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 14,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 14.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 15,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 15.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 16,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 16.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 17,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    },
+    {
+      "key": 17.5,
+      "Hiep": "",
+      "Hoang": "",
+      "Phuong": "",
+      "Chan": "",
+      "Ly": ""
+    }
+  ],
+  "time_slots": [10, 10.5, 11, 11.5, 12, 12.5, 13, 13.5, 14, 14.5, 15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5],
+  "employees": ["Hiep", "Hoang", "Phuong", "Chan", "Ly"],
+  "calendar": {
+    "Hiep": [
+      {
+        "id": 1,
+        "customer": "Obama",
+        "start": 12,
+        "long": 2
+      },
+      {
+        "id": 2,
+        "customer": "Obama1",
+        "start": 18,
+        "long": 1
+      }
+    ],
+    "Hoang": [
+      {
+        "id": 3,
+        "customer": "Obama3",
+        "start": 15,
+        "long": 2
+      },
+      {
+        "id": 4,
+        "customer": "Obama4",
+        "start": 16,
+        "long": 0.5
+      }
+    ]
+  }
+}

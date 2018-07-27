@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {Location} from '@angular/common';
 
 @Component({
@@ -10,10 +10,12 @@ import {Location} from '@angular/common';
 })
 export class WatchVideoComponent implements OnInit {
   link = 'https://www.youtube.com/embed/';
+  secure_url: SafeResourceUrl;
   constructor(private route: ActivatedRoute, public sanitizer: DomSanitizer, private location: Location) { }
 
   ngOnInit() {
     this.link += this.route.snapshot.paramMap.get('id');
+    this.secure_url = this.sanitizer.bypassSecurityTrustResourceUrl(this.link);
   }
 
   goBack() {

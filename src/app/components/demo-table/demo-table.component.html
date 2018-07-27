@@ -1,0 +1,31 @@
+<nz-table #basicTable nzBordered [nzPageSize]="50" [nzData]="timeSlots">
+  <thead>
+  <tr>
+    <th>Time</th>
+    <th *ngFor="let em of employees">{{em}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let timeSlot of basicTable.data">
+    <td>{{timeSlot.start}}</td>
+    <ng-container *ngFor="let em of employees">
+      <td [draggable]="isBusy(timeSlot.start, em)"
+          [ngStyle]="{'background': isBusy(timeSlot.start, em).isBusy?'rgba(200,200,200,.3)':'inherit'}"
+          (dragstart)="dragStart($event, em, timeSlot.start)"
+          (dragover)="allowDrop($event)"
+          (drop)="drop($event)"
+          [attr.data-time]="timeSlot.start"
+          [attr.data-em]="em"
+          *ngIf="!isBusy(timeSlot.start, em).isBusy||isBusy(timeSlot.start, em).isBusy&&isBusy(timeSlot.start, em).isFirst"
+          [attr.rowspan]="isBusy(timeSlot.start, em).isBusy?isBusy(timeSlot.start, em).rowspan:1">
+        <ng-container *ngIf="isBusy(timeSlot.start, em).isBusy">
+          {{calandar[em][isBusy(timeSlot.start, em).bussinessIndex].customer}}
+          <br>
+          <button nz-button nzType="primary" (click)="addMoreTime(timeSlot.start, em)"><i class="anticon anticon-plus"></i> 30m</button>
+        </ng-container>
+        <ng-container *ngIf="!isBusy(timeSlot.start, em).isBusy">{{timeSlot.start}}</ng-container>
+      </td>
+    </ng-container>
+  </tr>
+  </tbody>
+</nz-table>

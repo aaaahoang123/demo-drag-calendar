@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {VideosService} from '../services/videos.service';
+import {VideosService} from '../../services/videos.service';
 
 @Component({
   selector: 'app-home-page',
@@ -9,7 +9,7 @@ import {VideosService} from '../services/videos.service';
 export class HomePageComponent implements OnInit {
   videos = this.videoService.videos;
   isLoadingVideos = false;
-  constructor(private videoService: VideosService) { }
+  constructor(private videoService: VideosService) {}
 
   ngOnInit() {
     if (this.videos.length === 0) {

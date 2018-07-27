@@ -1,2 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/ng-zorro-antd/src/ng-zorro-antd.min.css";
+
+/**
+ * Container for the main content
+ */
+.container {
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Xs screen */
+@media only screen and (max-width:480px){
+  .container {
+    width: 100%
+  }
+}
+/* Sm screen */
+@media only screen and (min-width:480px) and (max-width:768px){
+  .container {
+    max-width: 464px;
+  }
+}
+/* Md screen */
+@media only screen and (min-width:768px) and (max-width:992px){
+  .container {
+    max-width: 720px;
+  }
+}
+/* Lg screen */
+@media only screen and (min-width:992px) and (max-width:1200px){
+  .container {
+    max-width: 960px;
+  }
+}
+/* Xl screen */
+@media only screen and (min-width:1200px) and (max-width:1600px){
+  .container {
+    max-width: 1140px;
+  }
+}
+/* Xxl screen */
+@media only screen and (min-width:1600px) {
+  .container {
+    max-width: 1520px;
+  }
+}
