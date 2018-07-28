@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-demo-table',
@@ -112,7 +112,9 @@ export class DemoTableComponent implements OnInit {
       }
     ]
   };
-  constructor() { }
+  constructor(
+    public cd: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     console.log(this.calandar);
@@ -159,6 +161,7 @@ export class DemoTableComponent implements OnInit {
    * @param key
    */
   dragStart(ev, em, key) {
+    this.cd.detach()
     let dataTranfer;
     for (let i = 0; i < this.calandar[em].length; i++) {
       if (key >= this.calandar[em][i].start && key < (this.calandar[em][i].start + this.calandar[em][i].long)) {
@@ -177,6 +180,7 @@ export class DemoTableComponent implements OnInit {
    * @param ev
    */
   drop(ev) {
+    
     const dataTransfer = JSON.parse(ev.dataTransfer.getData('data'));
     const employee = dataTransfer[0];
     const orderIndex = dataTransfer[1];
@@ -188,6 +192,7 @@ export class DemoTableComponent implements OnInit {
       newData.start = Number(ev.target.getAttribute('data-time'));
       this.calandar[ev.target.getAttribute('data-em')].push(newData);
     }
+    this.cd.reattach()
   }
 
   addMoreTime(time, em) {
