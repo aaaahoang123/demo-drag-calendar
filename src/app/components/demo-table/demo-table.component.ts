@@ -245,8 +245,7 @@ export class DemoTableComponent implements OnInit {
    * Sau khi nhận được tên nhân viên cùng index của order, tiến hành update thông tin theo thông tin của ô được drop vào
    * @param ev
    */
-  drop(ev,slotTimeStart,currentEmployee) {
-    console.log('ev',ev);
+  drop(slotTimeStart,currentEmployee) {
     // const dataTransfer = JSON.parse(ev.dataTransfer.getData('data'));
     console.log('dataTransfer',this.dataTransfer)
     const oldEmployee = this.dataTransfer[0];
@@ -254,22 +253,19 @@ export class DemoTableComponent implements OnInit {
     // nếu khoảng thời gian của order không bị trùng với order khác
     let oldEmployeeData = this.calandar[oldEmployee];
     let currentEmployeeData = this.calandar[currentEmployee];
-    let slotDuplicate = Object.values(currentEmployeeData || {}).filter(slot => this.inTime(slot,slotTimeStart.start + oldEmployeeData[orderIndex].long))
-    console.log('slotTimeStart.start + oldEmployeeData[orderIndex].long',slotTimeStart,oldEmployeeData,orderIndex,slotTimeStart + oldEmployeeData[orderIndex].long)
-    // if (slotDuplicate.length) {
-      // Nếu tên của nhân viên hoặc thời gian bắt đầu của order đã thay đổi, xóa order cũ đi, tạo order mới và đẩy vào vị trí tương ứng.
-      if (oldEmployee !== currentEmployee || oldEmployeeData[orderIndex].start !== slotTimeStart) {
-        const newData = {...oldEmployeeData[orderIndex]};
-        // this.calandar[employee].splice(orderIndex, 1);
-        // if (!this.calandar[currentEmployee]) this.calandar[currentEmployee] = [];
-        // newData.start = slotTimeStart;
-        // this.calandar[currentEmployee].push(newData);
-        delete oldEmployeeData[orderIndex];
-        if (!currentEmployeeData) currentEmployeeData = {};
-        newData.start = slotTimeStart;
-        currentEmployeeData[orderIndex] = (newData);
-      }
-    // }
+
+    // Nếu tên của nhân viên hoặc thời gian bắt đầu của order đã thay đổi, xóa order cũ đi, tạo order mới và đẩy vào vị trí tương ứng.
+    if (oldEmployee !== currentEmployee || oldEmployeeData[orderIndex].start !== slotTimeStart) {
+      const newData = {...oldEmployeeData[orderIndex]};
+      // this.calandar[employee].splice(orderIndex, 1);
+      // if (!this.calandar[currentEmployee]) this.calandar[currentEmployee] = [];
+      // newData.start = slotTimeStart;
+      // this.calandar[currentEmployee].push(newData);
+      delete oldEmployeeData[orderIndex];
+      if (!this.calandar[currentEmployee]) this.calandar[currentEmployee] = {};
+      newData.start = slotTimeStart;
+      this.calandar[currentEmployee][orderIndex] = (newData);
+    }
     this.cd.reattach()
   }
 

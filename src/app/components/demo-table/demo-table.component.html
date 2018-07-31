@@ -14,7 +14,7 @@
           [ngStyle]="{'background': appointment.isBusy?'rgba(200,200,200,.3)':'inherit'}"
           (dragstart)="dragStart($event, em, timeSlot.start)"
           (dragover)="allowDrop($event)"
-          (drop)="drop($event,timeSlot.start,em)"
+          (drop)="drop(timeSlot.start,em)"
           [attr.data-time]="timeSlot.start"
           [attr.data-em]="em"
           *ngIf="!appointment.isBusy||appointment.isBusy&&appointment.isFirst"
