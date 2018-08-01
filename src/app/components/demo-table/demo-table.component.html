@@ -17,12 +17,9 @@
           (drop)="drop(timeSlot.start,em, appointment.orderId)"
           [attr.data-time]="timeSlot.start"
           [attr.data-em]="em"
-          *ngIf="!appointment.isBusy||appointment.isBusy&&appointment.isFirst"
-          [attr.rowspan]="appointment.isBusy?appointment.rowspan:1">
-          <ng-container *ngIf="appointment.isBusy">
+          (dblclick)="addMoreTime(appointment.orderId, em)">
+          <ng-container *ngIf="appointment.isBusy&&appointment.isFirst">
             {{calandar[em][appointment.orderId].customer}}
-            <br>
-            <button nz-button nzType="primary" (click)="addMoreTime(appointment.orderId, em)"><i class="anticon anticon-plus"></i> 30m</button>
           </ng-container>
           <ng-container *ngIf="!appointment.isBusy">{{timeSlot.start}}</ng-container>
         </td>

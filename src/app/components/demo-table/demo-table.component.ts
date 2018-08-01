@@ -253,20 +253,15 @@ export class DemoTableComponent implements OnInit {
     // nếu khoảng thời gian của order không bị trùng với order khác
     let oldEmployeeData = this.calandar[oldEmployee];
 
-    // Tính xem order mới sẽ kết thúc vào thời điểm nào, từ đó check xem thời điểm bắt đầu và kết thúc có bị busy không, nếu 1 trong 2 là busy => hủy lệnh drop
     let slotTimeEnd = slotTimeStart + oldEmployeeData[orderId].long;
 
-    const timeStartIsBusy = this.isBusy(slotTimeStart, currentEmployee);
-    const timeEndIsBusy = this.isBusy(slotTimeEnd - 0.5, currentEmployee);
-
-    // Nếu chuyển sang nhân viên khác, check xem nếu thời gian bắt đầu hoặc kết thúc bận thì hủy drop
-    if (oldEmployee !== currentEmployee) {
-      if (timeStartIsBusy.isBusy || timeEndIsBusy.isBusy) return alert("Thời gian bị trùng với lượt đi khách khác!");
-    }
-    // Nếu chuyển cùng nhân viên, ngoài việc check bận, còn cần check xem có trùng orderId không,
-    // nếu thời gian bắt đầu hoặc kết thúc bận, mà lại cùng 1 order thì vẫn cho drop (không return hàm nữa)
-    else {
-      if ((timeEndIsBusy.isBusy && timeEndIsBusy.orderId !== Number(orderId)) || (timeStartIsBusy.isBusy && timeStartIsBusy.orderId !== Number(orderId))) return alert("Thời gian bị trùng với lượt đi khách khác!");
+    // Vòng lặp qua tất cả các time slot mới mà order sau khi drop sẽ chiếm.
+    // Trong trường hợp có một time slot nào đó đã bận
+    // => Xét xem nếu chuyển sang nhân viên khác => Không cho drop
+    // => Nếu vẫn là cùng nhân viên => Xét xem khoảng thời gian trùng đó có phải là thuộc order chuẩn bị xóa (order cũ) không, nếu sai, hủy drop
+    for (let i=slotTimeStart; i<slotTimeEnd; i+=0.5) {
+      const timeSlotStatus = this.isBusy(i, currentEmployee);
+      if (timeSlotStatus.isBusy && (oldEmployee !== currentEmployee || timeSlotStatus.orderId !== Number(orderId))) return alert("Thời gian bị trùng với lượt đi khách khác!");
     }
 
     console.log('dataTransfer',this.dataTransfer);
@@ -284,10 +279,13 @@ export class DemoTableComponent implements OnInit {
 
   addMoreTime(orderId, em) {
     let employeeData = this.calandar[em];
-    // Thời gian kết thúc order mới sẽ thêm 0.5 tiếng, tuy nhiên, khi đưa vào check isBusy lại cần bớt 0.5 tiếng nên 2 phần này triệt tiêu
-    const newOrderTimeEnd = employeeData[orderId].start + employeeData[orderId].long;
-    if (!this.isBusy(newOrderTimeEnd, em).isBusy) {
-      employeeData[orderId].long += 0.5;
-    } else alert("Thời gian bị trùng với lượt đi khách khác!");
+    if (orderId) {
+      // Thời gian kết thúc order mới sẽ thêm 0.5 tiếng, tuy nhiên, khi đưa vào check isBusy lại cần bớt 0.5 tiếng nên 2 phần này triệt tiêu
+      const newOrderTimeEnd = employeeData[orderId].start + employeeData[orderId].long;
+      if (!this.isBusy(newOrderTimeEnd, em).isBusy) {
+        employeeData[orderId].long += 0.5;
+      } else alert("Thời gian bị trùng với lượt đi khách khác!");
+    }
+
   }
 }
