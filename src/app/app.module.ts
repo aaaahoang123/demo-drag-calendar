@@ -15,7 +15,6 @@ import { BigScreenNavbarComponent } from './components/big-screen-navbar/big-scr
 import { MobileScreenNavbarComponent } from './components/mobile-screen-navbar/mobile-screen-navbar.component';
 import { DemoTableComponent } from './components/demo-table/demo-table.component';
 import { NgInitDirective } from './directives/ng-init.directive';
-import { DemoTableTdComponent } from './components/demo-table/demo-table-td/demo-table-td.component';
 
 registerLocaleData(en);
 
@@ -27,8 +26,7 @@ registerLocaleData(en);
     BigScreenNavbarComponent,
     MobileScreenNavbarComponent,
     DemoTableComponent,
-    NgInitDirective,
-    DemoTableTdComponent
+    NgInitDirective
   ],
   imports: [
     BrowserModule,
