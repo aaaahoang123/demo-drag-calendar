@@ -1,5 +1,7 @@
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { timeout } from 'q';
+import {forEach} from '@angular/router/src/utils/collection';
+
 
 @Component({
   selector: 'app-demo-table',
@@ -184,13 +186,13 @@ export class DemoTableComponent implements OnInit {
       // }
 
       // REFACTOR 2
-      //lọc lấy slot mà thời gian hiện tại trong khoảng thời gian của slot
-      let slotInTimeRange = Object.values(employeeData || {}).filter(slot => this.inTime(slot,time))
+      // lọc lấy slot mà thời gian hiện tại trong khoảng thời gian của slot
+      let slotInTimeRange = Object.values(employeeData || {}).filter(slot => this.inTime(slot,time));
       if (slotInTimeRange && slotInTimeRange.length) {
         let slot:any = slotInTimeRange[0];
         let temp = {
           isBusy: true,
-          bussinessIndex: slot.id,
+          orderId: slot.id,
           isFirst: false,
           rowspan: 1
         };
@@ -214,8 +216,7 @@ export class DemoTableComponent implements OnInit {
    * @param key
    */
   dragStart(ev, em, timeSlotStart) {
-    
-    this.cd.detach()
+    this.cd.detach();
     let dataTranfer;
     // for (let i = 0; i < this.calandar[em].length; i++) {
     //   if (timeSlotStart >= this.calandar[em][i].start && timeSlotStart < (this.calandar[em][i].start + this.calandar[em][i].long)) {
@@ -245,43 +246,48 @@ export class DemoTableComponent implements OnInit {
    * Sau khi nhận được tên nhân viên cùng index của order, tiến hành update thông tin theo thông tin của ô được drop vào
    * @param ev
    */
-  drop(slotTimeStart,currentEmployee) {
-    // const dataTransfer = JSON.parse(ev.dataTransfer.getData('data'));
-    console.log('dataTransfer',this.dataTransfer)
+  drop(slotTimeStart, currentEmployee, currentOrderId) {
     const oldEmployee = this.dataTransfer[0];
-    const orderIndex = this.dataTransfer[1];
+    const orderId = this.dataTransfer[1];
+
     // nếu khoảng thời gian của order không bị trùng với order khác
     let oldEmployeeData = this.calandar[oldEmployee];
-    let currentEmployeeData = this.calandar[currentEmployee];
+
+    // Tính xem order mới sẽ kết thúc vào thời điểm nào, từ đó check xem thời điểm bắt đầu và kết thúc có bị busy không, nếu 1 trong 2 là busy => hủy lệnh drop
+    let slotTimeEnd = slotTimeStart + oldEmployeeData[orderId].long;
+
+    const timeStartIsBusy = this.isBusy(slotTimeStart, currentEmployee);
+    const timeEndIsBusy = this.isBusy(slotTimeEnd - 0.5, currentEmployee);
+
+    // Nếu chuyển sang nhân viên khác, check xem nếu thời gian bắt đầu hoặc kết thúc bận thì hủy drop
+    if (oldEmployee !== currentEmployee) {
+      if (timeStartIsBusy.isBusy || timeEndIsBusy.isBusy) return alert("Thời gian bị trùng với lượt đi khách khác!");
+    }
+    // Nếu chuyển cùng nhân viên, ngoài việc check bận, còn cần check xem có trùng orderId không,
+    // nếu thời gian bắt đầu hoặc kết thúc bận, mà lại cùng 1 order thì vẫn cho drop (không return hàm nữa)
+    else {
+      if ((timeEndIsBusy.isBusy && timeEndIsBusy.orderId !== Number(orderId)) || (timeStartIsBusy.isBusy && timeStartIsBusy.orderId !== Number(orderId))) return alert("Thời gian bị trùng với lượt đi khách khác!");
+    }
+
+    console.log('dataTransfer',this.dataTransfer);
 
     // Nếu tên của nhân viên hoặc thời gian bắt đầu của order đã thay đổi, xóa order cũ đi, tạo order mới và đẩy vào vị trí tương ứng.
-    if (oldEmployee !== currentEmployee || oldEmployeeData[orderIndex].start !== slotTimeStart) {
-      const newData = {...oldEmployeeData[orderIndex]};
-      // this.calandar[employee].splice(orderIndex, 1);
-      // if (!this.calandar[currentEmployee]) this.calandar[currentEmployee] = [];
-      // newData.start = slotTimeStart;
-      // this.calandar[currentEmployee].push(newData);
-      delete oldEmployeeData[orderIndex];
+    if (oldEmployee !== currentEmployee || oldEmployeeData[orderId].start !== slotTimeStart) {
+      const newData = {...oldEmployeeData[orderId]};
+      delete oldEmployeeData[orderId];
       if (!this.calandar[currentEmployee]) this.calandar[currentEmployee] = {};
       newData.start = slotTimeStart;
-      this.calandar[currentEmployee][orderIndex] = (newData);
+      this.calandar[currentEmployee][orderId] = (newData);
     }
     this.cd.reattach()
   }
 
-  addMoreTime(time, em) {
-    // for (let b of this.calandar[em]) {
-    //   if (b.start === time) {
-    //     b.long += 0.5;
-    //     return;
-    //   }
-    // }
+  addMoreTime(orderId, em) {
     let employeeData = this.calandar[em];
-    for (const slotId in employeeData) {
-      if (employeeData.hasOwnProperty(slotId)) {
-        const slot = employeeData[slotId];
-        if (slot.start == time) slot.long += 0.5;
-      }
-    }
+    // Thời gian kết thúc order mới sẽ thêm 0.5 tiếng, tuy nhiên, khi đưa vào check isBusy lại cần bớt 0.5 tiếng nên 2 phần này triệt tiêu
+    const newOrderTimeEnd = employeeData[orderId].start + employeeData[orderId].long;
+    if (!this.isBusy(newOrderTimeEnd, em).isBusy) {
+      employeeData[orderId].long += 0.5;
+    } else alert("Thời gian bị trùng với lượt đi khách khác!");
   }
 }

@@ -10,22 +10,22 @@
     <td>{{timeSlot.start}}</td>
     <ng-container *ngFor="let em of employees">
       <ng-container *ngIf="isBusy(timeSlot.start, em) as appointment">
-        <td [draggable]=""
+        <td [draggable]="appointment.isBusy"
           [ngStyle]="{'background': appointment.isBusy?'rgba(200,200,200,.3)':'inherit'}"
           (dragstart)="dragStart($event, em, timeSlot.start)"
           (dragover)="allowDrop($event)"
-          (drop)="drop(timeSlot.start,em)"
+          (drop)="drop(timeSlot.start,em, appointment.orderId)"
           [attr.data-time]="timeSlot.start"
           [attr.data-em]="em"
           *ngIf="!appointment.isBusy||appointment.isBusy&&appointment.isFirst"
           [attr.rowspan]="appointment.isBusy?appointment.rowspan:1">
-        <ng-container *ngIf="appointment.isBusy">
-          {{calandar[em][appointment.bussinessIndex].customer}}
-          <br>
-          <button nz-button nzType="primary" (click)="addMoreTime(timeSlot.start, em)"><i class="anticon anticon-plus"></i> 30m</button>
-        </ng-container>
-        <ng-container *ngIf="!appointment.isBusy">{{timeSlot.start}}</ng-container>
-      </td>
+          <ng-container *ngIf="appointment.isBusy">
+            {{calandar[em][appointment.orderId].customer}}
+            <br>
+            <button nz-button nzType="primary" (click)="addMoreTime(appointment.orderId, em)"><i class="anticon anticon-plus"></i> 30m</button>
+          </ng-container>
+          <ng-container *ngIf="!appointment.isBusy">{{timeSlot.start}}</ng-container>
+        </td>
       </ng-container>
     </ng-container>
   </tr>
