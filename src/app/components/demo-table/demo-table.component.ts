@@ -1,6 +1,5 @@
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
-import { timeout } from 'q';
-import {forEach} from '@angular/router/src/utils/collection';
+import { ResizeEvent, Edges } from 'angular-resizable-element'; // copy ca ben css.
 
 
 @Component({
@@ -194,11 +193,15 @@ export class DemoTableComponent implements OnInit {
           isBusy: true,
           orderId: slot.id,
           isFirst: false,
+          isLast: false,
           rowspan: 1
         };
         if (time == slot.start) {
           temp.isFirst = true;
           temp.rowspan = slot.long / 0.5;
+        }
+        if (time == (slot.start + (slot.long - 0.5))) {
+          temp.isLast = true;
         }
         return temp
       }
@@ -287,5 +290,35 @@ export class DemoTableComponent implements OnInit {
       } else alert("Thời gian bị trùng với lượt đi khách khác!");
     }
 
+  }
+
+  /**
+   * TODO: Cần tìm đến đúng ô chứa dữ liệu, sau đó chỉnh sửa....
+   */
+  editTime(modifyEvent,position) {
+    
+  }
+
+  onResizeEnd(event: ResizeEvent,position): void {
+    console.log('Element was resized', event);
+    let eventResult = this.caculateReize(event.edges);
+    console.log('result',eventResult,position);
+    // có kết quả rồi, giờ dựa vào vị trí (ở trên hay dưới) để chỉnh sửa thời gian (thêm hoặc bớt)
+    this.editTime(eventResult,position);
+  }
+
+
+  /**
+   * Tính toán hướng lên hay xuống và kéo được mấy ô để cho dự đoán cộng hay trừ thời gian
+   */
+  caculateReize(edge:Edges) {
+    let distance = +edge.top; 
+    let value = distance - 0;
+    let direction;
+    if (value > 0) direction = 'down'
+    else if (value < 0) direction = 'up'
+    else direction = 'hold';
+    let ratio = Math.round(Math.abs(value) / 56);
+    return {direction,ratio}
   }
 }

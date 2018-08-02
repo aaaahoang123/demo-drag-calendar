@@ -10,18 +10,43 @@
     <td>{{timeSlot.start}}</td>
     <ng-container *ngFor="let em of employees">
       <ng-container *ngIf="isBusy(timeSlot.start, em) as appointment">
-        <td [draggable]="appointment.isBusy"
-          [ngStyle]="{'background': appointment.isBusy?'rgba(200,200,200,.3)':'inherit'}"
+        <td 
+
+          [draggable]="appointment.isBusy"
+          [class.busyBackground] = "appointment.isBusy"
           (dragstart)="dragStart($event, em, timeSlot.start)"
           (dragover)="allowDrop($event)"
           (drop)="drop(timeSlot.start,em, appointment.orderId)"
           [attr.data-time]="timeSlot.start"
           [attr.data-em]="em"
-          (dblclick)="addMoreTime(appointment.orderId, em)">
-          <ng-container *ngIf="appointment.isBusy&&appointment.isFirst">
-            {{calandar[em][appointment.orderId].customer}}
-          </ng-container>
-          <ng-container *ngIf="!appointment.isBusy">{{timeSlot.start}}</ng-container>
+          (dblclick)="addMoreTime(appointment.orderId, em)"
+        >
+          <div 
+          class="resize-topbar"
+          *ngIf="appointment.isBusy&&appointment.isFirst"
+          [class.busyBackground] = "appointment.isBusy"
+          mwlResizable
+          [enableGhostResize]="appointment.isBusy ? true: false"
+          [resizeEdges]="appointment.isBusy ? {bottom: true, right: false, top: true, left: false}: {}"
+          (resizeEnd)="onResizeEnd($event,'top')"
+          >
+          </div>
+          <span>
+              <ng-container *ngIf="appointment.isBusy&&appointment.isFirst">
+                {{calandar[em][appointment.orderId].customer}}
+              </ng-container>
+              <ng-container *ngIf="!appointment.isBusy">{{timeSlot.start}}</ng-container>
+          </span>
+          <div 
+          class="resize-bottombar"
+          *ngIf="appointment.isBusy&&appointment.isLast"
+          [class.busyBackground] = "appointment.isBusy"
+          mwlResizable
+          [enableGhostResize]="appointment.isBusy ? true: false"
+          [resizeEdges]="appointment.isBusy ? {bottom: true, right: false, top: true, left: false}: {}"
+          (resizeEnd)="onResizeEnd($event,'bottom')"
+          >
+          </div>
         </td>
       </ng-container>
     </ng-container>

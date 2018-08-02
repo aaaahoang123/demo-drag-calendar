@@ -1,0 +1,30 @@
+mwlResizable {
+    box-sizing: border-box; 
+}
+
+.resize-topbar {
+    border: yellow 1px solid;
+}
+
+.resize-bottombar {
+    border: red 1px solid;
+}
+
+.busyBackground {
+    background-color: rgba(200,200,200,.3);
+}
+
+tr td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 0!important;
+   
+}
+
+tr td span {
+    width: 100%;
+    height: 56px;
+    vertical-align: middle;
+    /* might be optional sometimes */
+    display: inline-block;
+}
