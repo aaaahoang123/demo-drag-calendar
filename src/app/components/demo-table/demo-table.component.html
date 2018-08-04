@@ -10,7 +10,7 @@
     <td>{{timeSlot.start}}</td>
     <ng-container *ngFor="let em of employees">
       <ng-container *ngIf="isBusy(timeSlot.start, em) as appointment">
-        <td 
+        <td
 
           [draggable]="appointment.isBusy"
           [class.busyBackground] = "appointment.isBusy"
@@ -21,14 +21,14 @@
           [attr.data-em]="em"
           (dblclick)="addMoreTime(appointment.orderId, em)"
         >
-          <div 
+          <div
           class="resize-topbar"
           *ngIf="appointment.isBusy&&appointment.isFirst"
           [class.busyBackground] = "appointment.isBusy"
           mwlResizable
           [enableGhostResize]="appointment.isBusy ? true: false"
           [resizeEdges]="appointment.isBusy ? {bottom: true, right: false, top: true, left: false}: {}"
-          (resizeEnd)="onResizeEnd($event,'top')"
+          (resizeEnd)="onResizeEnd($event,'top',  em, appointment.orderId)"
           >
           </div>
           <span>
@@ -37,14 +37,14 @@
               </ng-container>
               <ng-container *ngIf="!appointment.isBusy">{{timeSlot.start}}</ng-container>
           </span>
-          <div 
+          <div
           class="resize-bottombar"
           *ngIf="appointment.isBusy&&appointment.isLast"
           [class.busyBackground] = "appointment.isBusy"
           mwlResizable
           [enableGhostResize]="appointment.isBusy ? true: false"
           [resizeEdges]="appointment.isBusy ? {bottom: true, right: false, top: true, left: false}: {}"
-          (resizeEnd)="onResizeEnd($event,'bottom')"
+          (resizeEnd)="onResizeEnd($event,'bottom', em, appointment.orderId)"
           >
           </div>
         </td>

@@ -295,16 +295,50 @@ export class DemoTableComponent implements OnInit {
   /**
    * TODO: Cần tìm đến đúng ô chứa dữ liệu, sau đó chỉnh sửa....
    */
-  editTime(modifyEvent,position) {
-    
+  editTime(modifyEvent,position, em, orderId) {
+    let employeeData = this.calandar[em],
+      newStart = employeeData[orderId].start,
+      newEnd = employeeData[orderId].start + employeeData[orderId].long;
+    if (orderId) {
+
+      if (position === 'top') {
+        if (modifyEvent.direction === 'up') {
+          newStart -= modifyEvent.ratio/2;
+        }
+        if (modifyEvent.direction === 'down') {
+          newStart += modifyEvent.ratio/2;
+        }
+      }
+
+      else {
+        if (modifyEvent.direction === 'up') {
+          newEnd -= modifyEvent.ratio/2;
+        }
+        if (modifyEvent.direction === 'down') {
+          newEnd += modifyEvent.ratio/2;
+        }
+      }
+      
+      if (newEnd<=newStart) return alert("Thời gian kết thúc phải lớn hơn thời gian bắt đầu!");
+      if (newStart<=10) return alert("Tiệm bắt đầu đi khách từ 10h!");
+      for (let i=newStart; i<newEnd; i+=0.5) {
+        const timeSlotStatus = this.isBusy(i, em);
+        if (timeSlotStatus.isBusy &&  timeSlotStatus.orderId !== Number(orderId)) return alert("Thời gian bị trùng với lượt đi khách khác!");
+      }
+
+      employeeData[orderId].start = newStart;
+      employeeData[orderId].long = newEnd - newStart;
+    }
   }
 
-  onResizeEnd(event: ResizeEvent,position): void {
+  onResizeEnd(event: ResizeEvent, position, em, orderId): void {
     console.log('Element was resized', event);
     let eventResult = this.caculateReize(event.edges);
     console.log('result',eventResult,position);
     // có kết quả rồi, giờ dựa vào vị trí (ở trên hay dưới) để chỉnh sửa thời gian (thêm hoặc bớt)
-    this.editTime(eventResult,position);
+    setTimeout(() => {
+      this.editTime(eventResult, position, em, orderId);
+    }, 300)
   }
 
 
@@ -312,7 +346,7 @@ export class DemoTableComponent implements OnInit {
    * Tính toán hướng lên hay xuống và kéo được mấy ô để cho dự đoán cộng hay trừ thời gian
    */
   caculateReize(edge:Edges) {
-    let distance = +edge.top; 
+    let distance = +edge.top;
     let value = distance - 0;
     let direction;
     if (value > 0) direction = 'down'
