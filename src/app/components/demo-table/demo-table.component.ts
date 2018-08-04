@@ -296,6 +296,7 @@ export class DemoTableComponent implements OnInit {
    * TODO: Cần tìm đến đúng ô chứa dữ liệu, sau đó chỉnh sửa....
    */
   editTime(modifyEvent,position, em, orderId) {
+    console.log('start edit time')
     let employeeData = this.calandar[em],
       newStart = employeeData[orderId].start,
       newEnd = employeeData[orderId].start + employeeData[orderId].long;
@@ -329,6 +330,8 @@ export class DemoTableComponent implements OnInit {
       employeeData[orderId].start = newStart;
       employeeData[orderId].long = newEnd - newStart;
     }
+    console.log('finish edit time')
+
   }
 
   onResizeEnd(event: ResizeEvent, position, em, orderId): void {
@@ -338,7 +341,7 @@ export class DemoTableComponent implements OnInit {
     // có kết quả rồi, giờ dựa vào vị trí (ở trên hay dưới) để chỉnh sửa thời gian (thêm hoặc bớt)
     setTimeout(() => {
       this.editTime(eventResult, position, em, orderId);
-    }, 300)
+    }, 0)
   }
 
 
